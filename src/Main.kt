@@ -2,7 +2,7 @@ package org.example
 import Login
 fun main() {
 
-        println("---Menu---")
+    println("---Menu---")
     println("1:Login   ")
     println("2:Registar")
     val decision = readln().toInt()
@@ -31,8 +31,6 @@ fun main() {
 
         allTransactions.forEach {
             println("${it.date} - ${it.type}: ${it.category} - ${it.amount} - ${it.note ?: "Sem Notas adicionais!"}")
+        }
     }
-    }
-
-
 }

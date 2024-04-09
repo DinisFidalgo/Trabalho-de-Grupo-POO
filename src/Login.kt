@@ -23,21 +23,4 @@ class Login(var login: String, var pass: String) {
             return "false"
         }
     }
-//    println("---Menu---")
-//    println("1:Login   ")
-//    println("2:Registar")
-//    val decision = readln().toInt()
-//    if(decision == 1){
-//        println("---Menu---")
-//        println("1:Username")
-//        val login = readLine().toString()
-//        println("2:Password")
-//        val pass = readLine().toString()
-//        if(Login(login,pass).Login() != "false"){
-//            val list = Login(login,pass).Login().split(",")
-//            println("---Menu---")
-//            println("Saldo: ${list[2]}")
-//            println("Numero de conta: ${list[3]}")
-//        }
-//    }
 }
