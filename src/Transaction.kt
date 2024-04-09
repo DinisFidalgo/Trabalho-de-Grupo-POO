@@ -1,6 +1,10 @@
+package org.example
+
+
 
 enum class TransactionType {
-    INCOME, EXPENSE   // Representam os ganhos e os gastos, respetivamente
+    INCOME, EXPENSE
+// Representam os ganhos e os gastos, respetivamente
 }
 // Class que vai representar a transação
 data class Transaction(

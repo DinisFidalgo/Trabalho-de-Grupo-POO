@@ -1,6 +1,4 @@
-import Transaction
-import TransactionType
-
+package org.example
 
 
 class ExpenseManager {
