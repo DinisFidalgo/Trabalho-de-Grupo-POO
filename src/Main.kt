@@ -1,5 +1,7 @@
-package org.example
 import Login
+import org.example.ExpenseManager
+import org.example.TransactionType
+
 fun main() {
 
     println("---Menu---")
