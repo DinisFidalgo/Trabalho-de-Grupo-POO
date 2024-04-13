@@ -9,16 +9,17 @@ data class FinancialGoal (
 class FinancialGoalLoader {
         private val goals: MutableList<FinancialGoal> = mutableListOf()
 
-
+                // csv loader to create and read the goals
         fun goalsLoader(file: String = "src/financialGoals.csv"){
                 File(file).forEachLine { line ->
                         val parts = line.split(",").map { it.trim() }
                         val description = parts[0]
-                        val value = parts[1].toDouble()
+                        val value = parts.getOrNull(1)?.toDoubleOrNull() ?: 0.0
                         val startDate = parts[2]
                         val endDate = parts[3]
 
                         val goal = FinancialGoal (description, value, startDate, endDate)
+                        goals.add(goal)
                 }
         }
         fun newGoal(description: String, value: Double, startDate: String, endDate: String) {

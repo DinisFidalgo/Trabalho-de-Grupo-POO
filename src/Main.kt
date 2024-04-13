@@ -35,8 +35,13 @@ fun main() {
             println("${it.date} - ${it.type}: ${it.category} - ${it.amount} - ${it.note ?: "Sem Notas adicionais!"}")
         }
 
-        FinancialGoalLoader().goalsLoader()
-        FinancialGoalLoader().newGoal("teste1", 3.0, "27/08/1990", "27/08/2016")
-        FinancialGoalLoader().obtainGoals()
+        val goalsManager = FinancialGoalLoader()
+        goalsManager.newGoal("teste1", 3.0, "27/08/1990", "27/08/2016")
+        goalsManager.newGoal("Comprar Carro",4500.0,"2024","2026")
+        goalsManager.goalsLoader()
+
+        val allGoals = goalsManager.obtainGoals()
+
+        allGoals.forEach { println("Objetivo: ${it.description} - Valor a Alcançar: ${it.value} - Data de inicio: ${it.startDate} - Data final:${it.endDate}") }
     }
 }
