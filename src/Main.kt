@@ -40,6 +40,8 @@ fun main() {
         goalsManager.newGoal("Comprar Carro",4500.0,"2024","2026")
         goalsManager.goalsLoader()
 
+        goalsManager.saveGoals()
+
         val allGoals = goalsManager.obtainGoals()
 
         allGoals.forEach { println("Objetivo: ${it.description} - Valor a Alcançar: ${it.value} - Data de inicio: ${it.startDate} - Data final:${it.endDate}") }

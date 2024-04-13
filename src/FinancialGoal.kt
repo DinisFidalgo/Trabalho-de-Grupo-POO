@@ -1,4 +1,5 @@
 import java.io.File
+
 data class FinancialGoal (
         val description: String,
         val value: Double,
@@ -9,7 +10,7 @@ data class FinancialGoal (
 class FinancialGoalLoader {
         private val goals: MutableList<FinancialGoal> = mutableListOf()
 
-                // csv loader to create and read the goals
+        // csv loader to create and read the goals
         fun goalsLoader(file: String = "src/financialGoals.csv"){
                 File(file).forEachLine { line ->
                         val parts = line.split(",").map { it.trim() }
@@ -27,8 +28,20 @@ class FinancialGoalLoader {
                 goals.add(goal)
         }
 
+        fun saveGoals(file: String = "src/financialGoals.csv") {
+                val goalWrite = File(file)
+                val data = goals.map { listOf(it.description, it.value.toString(), it.startDate, it.endDate) }
+                goalWrite.bufferedWriter().use { out ->
+                        data.forEach { row ->
+                                out.write(row.joinToString(","))
+                                out.newLine()
+                        }
+                }
+        }
+
         fun obtainGoals():List<FinancialGoal>{
                 return goals.toList()
         }
+
 }
 
