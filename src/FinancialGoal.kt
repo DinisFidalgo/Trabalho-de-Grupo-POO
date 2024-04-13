@@ -7,7 +7,7 @@ data class FinancialGoal (
 )
 
 
-// CSV Loader to get finalcial goals information
+// CSV Loader to get financial goals information
 class FinancialGoalLoader {
         private val goals: MutableList<FinancialGoal> = mutableListOf()
 
