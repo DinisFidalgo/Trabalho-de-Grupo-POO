@@ -15,7 +15,7 @@ class FinancialGoalLoader {
                 File(file).forEachLine { line ->
                         val parts = line.split(",").map { it.trim() }
                         val description = parts[0]
-                        val value = parts[1].toDouble() ?: 0.0
+                        val value = parts[1].toDouble()
                         val startDate = parts[2]
                         val endDate = parts[3]
 
