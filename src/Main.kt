@@ -34,5 +34,9 @@ fun main() {
         allTransactions.forEach {
             println("${it.date} - ${it.type}: ${it.category} - ${it.amount} - ${it.note ?: "Sem Notas adicionais!"}")
         }
+
+        FinancialGoalLoader().goalsLoader()
+        FinancialGoalLoader().newGoal("teste1", 3.0, "27/08/1990", "27/08/2016")
+        FinancialGoalLoader().obtainGoals()
     }
 }

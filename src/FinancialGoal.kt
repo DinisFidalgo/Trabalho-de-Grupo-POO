@@ -6,12 +6,11 @@ data class FinancialGoal (
         val endDate: String
 )
 
-
-// CSV Loader to get financial goals information
 class FinancialGoalLoader {
         private val goals: MutableList<FinancialGoal> = mutableListOf()
 
-        fun goalsLoader(file: String){
+
+        fun goalsLoader(file: String = "src/financialGoals.csv"){
                 File(file).forEachLine { line ->
                         val parts = line.split(",").map { it.trim() }
                         val description = parts[0]
@@ -22,6 +21,13 @@ class FinancialGoalLoader {
                         val goal = FinancialGoal (description, value, startDate, endDate)
                 }
         }
+        fun newGoal(description: String, value: Double, startDate: String, endDate: String) {
+                val goal = FinancialGoal(description, value, startDate, endDate)
+                goals.add(goal)
+        }
 
+        fun obtainGoals():List<FinancialGoal>{
+                return goals.toList()
+        }
 }
 
