@@ -1,4 +1,7 @@
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+
 class Login(var login: String, var pass: String) {
 
     val file = File("src/Login.csv")
@@ -21,6 +24,22 @@ class Login(var login: String, var pass: String) {
             return line
         } else {
             return "false"
+        }
+    }
+    fun register(balance: Double, accountNumber: Int ): Boolean{
+
+        val newUser = "$login,$pass,$balance,$accountNumber"
+
+        return try {
+
+            FileWriter(file, true).use {writer ->
+                writer.write("\n$newUser")
+                writer.flush()
+                true
+            }
+        }catch (e: IOException){
+            println("Registration error: ${e.message}")
+            false
         }
     }
 }
