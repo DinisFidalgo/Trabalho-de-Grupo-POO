@@ -26,44 +26,60 @@ fun main() {
                 val pass = readln().toString()
                 logged = Login(user,pass).login()
             }
+            2 -> {
+                println("Registar")
+                val user = readln().toString()
+                val pass = readln().toString()
+                val balance = 0.0
+                val accontNumber = readln()?.toInt() ?: 0
+                val registration = Login(user, pass).register(balance, accontNumber)
+                if (registration) {
+                    println("New Registered User: ${user} ")
+                } else {
+                    println("Error Registering User")
+                }}
+            3 -> println("Aplication Closed")
+            else -> println("Invalid option")
+            
+            }
         }
 
     }
 
 
-    val decision = readln().toInt()
-    if(decision == 1){
-        println("---Menu---")
-        println("1:Username")
-        val login = readLine().toString()
-        println("2:Password")
-        val pass = readLine().toString()
-        if(Login(login,pass).Login() != "false"){
-            val list = Login(login,pass).Login().split(",")
-            println("---Menu---")
-            println("Saldo: ${list[2]}")
-            println("Numero de conta: ${list[3]}")
-        }
-    }
+    //val decision = readln().toInt()
+    //if(decision == 1){
+    //    println("---Menu---")
+//        println("1:Username")
+//        val login = readLine().toString()
+//        println("2:Password")
+//        val pass = readLine().toString()
+//        if(Login(login,pass).Login() != "false"){
+//            val list = Login(login,pass).Login().split(",")
+//            println("---Menu---")
+//            println("Saldo: ${list[2]}")
+//            println("Numero de conta: ${list[3]}")
+//        }
+//    }
 
-    if(decision == 2){
-        println("---Menu---")
-        println("1:Username")
-        val login = readLine().toString()
-        println("2:Password")
-        val password = readLine().toString()
-        println("3:Balance")
-        val balance = readLine()?.toDoubleOrNull() ?: 0.0
-        println("4:Account Number")
-        val accountNumber = readLine()?.toInt() ?: 0
-
-        val registration = Login(login,password).register(balance,accountNumber)
-
-        if (registration){
-            println("New Registered User: ${login} ")
-        }else{
-            println("Error Registering User")
-        }
+//    if(decision == 2){
+//        println("---Menu---")
+//        println("1:Username")
+//        val login = readLine().toString()
+//        println("2:Password")
+//        val password = readLine().toString()
+//        println("3:Balance")
+//        val balance = readLine()?.toDoubleOrNull() ?: 0.0
+//        println("4:Account Number")
+//        val accountNumber = readLine()?.toInt() ?: 0
+//
+//        val registration = Login(login,password).register(balance,accountNumber)
+//
+//        if (registration){
+//            println("New Registered User: ${login} ")
+//        }else{
+//            println("Error Registering User")
+ //       }
 
 
        // expenseManager.newTransaction("01/01/2023",TransactionType.EXPENSE,"Almoçarada",74.99,"Comi num restaurante fantástico!")
@@ -88,5 +104,5 @@ fun main() {
 
         //allGoals.forEach { println("Objetivo: ${it.description} - Valor a Alcançar: ${it.value} - Data de inicio: ${it.startDate} - Data final:${it.endDate}") }
     //}
-}
+//}
 }
