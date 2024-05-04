@@ -9,7 +9,7 @@ class Login(var login: String, var pass: String) {
     var verification = 0
     var line = ""
 
-    fun Login(): String {
+    fun login(): Boolean {
         lines.forEach() {
             val templist = it.split(",")
             if (templist[0] == login && templist[1] == pass) {
@@ -21,9 +21,9 @@ class Login(var login: String, var pass: String) {
             }
         }
         if (verification == 1) {
-            return line
+            return true
         } else {
-            return "false"
+            return false
         }
     }
     fun register(balance: Double, accountNumber: Int ): Boolean{
