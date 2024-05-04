@@ -38,7 +38,7 @@ fun main() {
                 } else {
                     println("Error Registering User")
                 }}
-            3 -> println("Aplication Closed")
+            3 -> println("Application Closed")
             else -> println("Invalid option")
             
             }
