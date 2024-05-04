@@ -15,7 +15,7 @@ fun main() {
         println("1:Login   ")
         println("2:Registar")
         println("3:Sair")
-        println("Selecione uma opção")
+        println("Selecione uma opção: ")
 
         val option = readln().toInt()
 
@@ -43,6 +43,48 @@ fun main() {
             
             }
         }
+
+    var option = 0
+
+    while (option != 3){
+
+        println("---Menu---")
+        println("1 - Adicionar Transação ")
+        println("2 - Consultar Transações ")
+        println("3 - Sair ")
+
+        option = readln().toInt()
+
+        when (option) {
+            1 -> {
+                println("Nova Transação")
+                println("Data (DD/MM/AAAA): ")
+
+                val date = readln().toString()
+
+                println("Tipo (INCOME/EXPENSE): ")
+
+                val transactionType = TransactionType.valueOf(readln().toString().toUpperCase())
+
+                println("Categoria: ")
+
+                val transactionCategory = readln().toString()
+
+                println("Valor: ")
+
+                val transactionAmount = readln().toDouble()
+
+                println("Nota Adicional (Opcional): ")
+
+                val note = readln().toString()
+
+                expenseManager.newTransaction(date,transactionType,transactionCategory,transactionAmount,note)
+
+                println("Transação adicionada com sucesso!")
+
+            }
+        }
+    }
 
     }
 
@@ -104,5 +146,4 @@ fun main() {
 
         //allGoals.forEach { println("Objetivo: ${it.description} - Valor a Alcançar: ${it.value} - Data de inicio: ${it.startDate} - Data final:${it.endDate}") }
     //}
-//}
-}
+
