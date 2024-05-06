@@ -22,15 +22,20 @@ fun main() {
         when (option) {
             1 -> {
                 println("Login")
+                println("Utilizador: ")
                 val user = readln().toString()
+                println("Password: ")
                 val pass = readln().toString()
                 logged = Login(user,pass).login()
             }
             2 -> {
                 println("Registar")
+                println("Utilizador:")
                 val user = readln().toString()
+                println("PassWord:")
                 val pass = readln().toString()
                 val balance = 0.0
+                println("Número de conta:")
                 val accontNumber = readln()?.toInt() ?: 0
                 val registration = Login(user, pass).register(balance, accontNumber)
                 if (registration) {
