@@ -80,14 +80,14 @@ fun main() {
 
                 expenseManager.newTransaction(date,transactionType,transactionCategory,transactionAmount,note)
 
-                println("Transação adicionada com sucesso!")
+                println("A sua transação foi adicionada com sucesso!")
             }
             2 -> {
-                println("Estas são todas as transações:")
+                println("Estas são todas as suas transações:")
 
                 val transactions = expenseManager.getTransactions()
                 if (transactions.isEmpty()){
-                    println("Ainda não foi efectuada nenhuma transação")
+                    println("Ainda não efectuou nenhuma transação")
                 } else {
                     transactions.forEachIndexed { index, transaction ->
                         println("${index + 1}. $transaction")
