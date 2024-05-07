@@ -27,9 +27,27 @@ class Login() {
         }
     }
     fun Register(login: String, password: String, saldo: Number) {
+        val existingUsers = existingUsers()
+        if (existingUsers.any {it.first == login}){
+            println("Utilizador já existente. Crie um novo.")
+
+            return
+        }
+
         FileWriter(file, true).use { out ->
             out.append("${login},${password},${saldo},${Login().getNumeroConta()+1}\n")
         }
+    }
+    fun existingUsers () : List<Pair<String, String>> {
+        val user = mutableListOf<Pair<String,String>>()
+        val lines = file.readLines().drop(1)
+        lines.forEach { line ->
+            val parts = line.split(",")
+            val login = parts[0]
+            val pass = parts[1]
+            user.add (login to pass)
+        }
+        return user
     }
 
     fun getNumeroConta(): Int{
