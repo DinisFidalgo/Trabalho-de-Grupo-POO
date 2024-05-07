@@ -33,13 +33,13 @@ fun main() {
                     println("1.Transações")
                     println("2.Objetivos")
                     println("3.Sair")
-                    var option3 = readln().toInt()
-                    when (option3){
+                    var option = readln().toInt()
+                    when (option){
                         1->{
                             println("---Transações---")
                             println("1 - Adicionar Transação ")
                             println("2 - Consultar Transações ")
-                            println("3 - Sair")
+                            println("3 - Voltar")
 
                             var option = readln().toInt()
                             when (option) {
@@ -86,6 +86,7 @@ fun main() {
                             println("---Objetivos---")
                             println("1 - Adicionar Objetivo")
                             println("2 - Consultar Objetivos")
+                            println("3 - Voltar")
 
                             var option = readln().toInt()
 
@@ -107,10 +108,12 @@ fun main() {
                                         println(goals[0].dropLast(2))
                                     }
                                 }
+                                3 -> println("")
+                                else->{println("Opção Inválida!")}
                             }
 
                         }
-                        3->{"A sair"}
+                        3->{"Aplicação encerrada"}
                         else->{println("Opção Inválida!")}
                     }
 
@@ -132,6 +135,9 @@ fun main() {
                     Login().Register(login,pass,saldo)
                 }
             }
+            3 ->
+                println("Aplicação encerrada")
+                else -> println("A opção introduzida é inválida! Insira uma nova opção.")
         }
     }
 //
