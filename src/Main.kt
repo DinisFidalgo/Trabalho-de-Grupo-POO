@@ -60,7 +60,7 @@ fun main() {
                                     println("Nota Adicional (Opcional): ")
                                     val note = readln().toString()
 
-                                    expenseManager.newTransaction(date,transactionType,transactionCategory,transactionAmount,note)
+                                    expenseManager.newTransaction(date,transactionType,transactionCategory,transactionAmount,note,list[3].toInt())
 
                                     println("A sua transação foi adicionada com sucesso!")
                                 }
