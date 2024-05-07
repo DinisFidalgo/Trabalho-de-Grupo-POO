@@ -6,7 +6,6 @@ fun main() {
     val expenseManager =  ExpenseManager()
     val allTransactions = expenseManager.getTransactions()
     val goalsManager = FinancialGoalLoader()
-    println(FinancialGoalLoader().getGoals(1).forEach{println("${it[0].dropLast(2)}")})
     var logged = false
 
     println("---Menu---")
@@ -32,11 +31,21 @@ fun main() {
                     println("Saldo: ${list[2]}")
                     println("Numero de conta: ${list[3]}")
                     println("1.Criar Objetivo")
-                    println("2.Sair")
+                    println("1.Verificar Objetivo")
+                    println("3.Sair")
                     var option3 = readln().toInt()
                     when (option3){
                         1->{
-
+                            println("Nome do objetivo:")
+                            val nome = readLine().toString()
+                            println("Custo:")
+                            val custo = readln().toInt()
+                            println("Dias para completar o objetivo:")
+                            val dias = readln().toInt()
+                            FinancialGoalLoader().createGoal(nome,custo,dias,list[3].toInt())
+                        }
+                        2->{
+                            println(FinancialGoalLoader().getGoals(list[3].toInt()).forEach{println(it[0].dropLast(2))})
                         }
                         3->{"A sair"}
                         else->{println("erro")}
@@ -52,7 +61,7 @@ fun main() {
                 val pass = readLine().toString()
                 println("Confirme a sua password:")
                 val pass2 = readLine().toString()
-                if(pass2 != pass){;
+                if(pass2 != pass){
                     println("erro")
                 }   else {
                     println("Introduza o seu saldo:")
