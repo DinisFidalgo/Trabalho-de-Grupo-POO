@@ -4,7 +4,7 @@ import org.example.TransactionType
 
 fun main() {
     val expenseManager =  ExpenseManager()
-    val allTransactions = expenseManager.getTransactions()
+    //val allTransactions = expenseManager.getTransactions()
     val goalsManager = FinancialGoalLoader()
     var logged = false
 
@@ -67,7 +67,7 @@ fun main() {
                                 2-> {
                                     println("Estas são todas as suas transações:")
 
-                                    val transactions = expenseManager.getTransactions()
+                                    val transactions = expenseManager.getTransactions(list[3].toInt())
                                     if (transactions.isEmpty()){
                                         println("Ainda não efectuou nenhuma transação")
 
