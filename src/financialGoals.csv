@@ -1,4 +1,3 @@
-teste1,3.0,27/08/1990,27/08/2016
-Comprar Carro,4500.0,2024,2026
-teste1,3.0,27/08/1990,27/08/2016
-Comprar Carro,4500.0,2024,2026
+descricao,custo,diasParaCompletar,numeroConta
+Carro,10000,365,1
+Casa,100000,3650,1

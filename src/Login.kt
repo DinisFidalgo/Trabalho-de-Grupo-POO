@@ -2,14 +2,14 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 
-class Login(var login: String, var pass: String) {
+class Login() {
 
-    val file = File("src/Login.csv")
+    val file = File("src/login.csv")
     val lines = file.readLines().drop(1)
     var verification = 0
     var line = ""
 
-    fun login(): Boolean {
+    fun login(login: String, pass: String): String {
         lines.forEach() {
             val templist = it.split(",")
             if (templist[0] == login && templist[1] == pass) {
@@ -21,25 +21,25 @@ class Login(var login: String, var pass: String) {
             }
         }
         if (verification == 1) {
-            return true
+            return line
         } else {
-            return false
+            return "false"
         }
     }
-    fun register(balance: Double, accountNumber: Int ): Boolean{
-
-        val newUser = "$login,$pass,$balance,$accountNumber"
-
-        return try {
-
-            FileWriter(file, true).use {writer ->
-                writer.write("\n$newUser")
-                writer.flush()
-                true
-            }
-        }catch (e: IOException){
-            println("Registration error: ${e.message}")
-            false
+    fun Register(login: String, password: String, saldo: Number) {
+        FileWriter(file, true).use { out ->
+            out.append("${login},${password},${saldo},${Login().getNumeroConta()+1}\n")
         }
+    }
+
+    fun getNumeroConta(): Int{
+        var numeroConta: Int = 0
+        lines.forEach(){
+            val templist = it.split(",")
+            if (templist[3].toInt()>numeroConta){
+                numeroConta = templist[3].toInt()
+            }
+        }
+        return  numeroConta
     }
 }

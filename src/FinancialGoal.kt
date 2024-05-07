@@ -52,5 +52,20 @@ class FinancialGoalLoader {
                 return goals.toList()
         }
 
+        fun getGoals(numeroConta: Int): MutableList<List<String>> {
+                val file = File("src/financialGoals.csv")
+                val lines = file.readLines().drop(1)
+                var lista = mutableListOf<List<String>>()
+                lines.forEach{
+                        val templist = it.split(",")
+                        val templist2 = mutableListOf<String>()
+                        if (templist[3].toInt() == numeroConta) {
+                                templist2.add(it)
+                                lista.addFirst(templist2)
+                        }
+                        templist2.drop(0)
+                }
+                return lista
+        }
 }
 
