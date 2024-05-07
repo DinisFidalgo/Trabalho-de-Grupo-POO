@@ -58,12 +58,9 @@ class FinancialGoalLoader {
                 var lista = mutableListOf<List<String>>()
                 lines.forEach{
                         val templist = it.split(",")
-                        val templist2 = mutableListOf<String>()
                         if (templist[3].toInt() == numeroConta) {
-                                templist2.add(it)
-                                lista.addFirst(templist2)
+                                lista.add(listOf(it))
                         }
-                        templist2.drop(0)
                 }
                 return lista
         }

@@ -6,7 +6,7 @@ import java.io.FileWriter
 class ExpenseManager {
 
     private val transactions : MutableList<Transaction> = mutableListOf()
-    val dataBase = File("transactions.csv")
+    val dataBase = File("src/transactions.csv")
     val lines = dataBase.readLines().drop(1)
 
     //Função para que permite adicionar uma nova transação
