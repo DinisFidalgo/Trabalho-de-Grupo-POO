@@ -3,7 +3,6 @@ import java.io.FileWriter
 import java.io.IOException
 
 class Login() {
-
     val file = File("src/login.csv")
     val lines = file.readLines().drop(1)
     var verification = 0
