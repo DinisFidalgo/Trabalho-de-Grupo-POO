@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.apache.pdfbox:pdfbox:3.0.2")
 }
 
 application {
