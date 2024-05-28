@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2023.3.5"
+    kotlin("jvm") version "1.8.0"
     application
 }
 
