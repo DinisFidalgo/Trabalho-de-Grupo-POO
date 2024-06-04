@@ -43,6 +43,29 @@ class ReportOpenerCTT(private val fileCTT: String){
         dateList = removeValuesAtEvenPositions(dateList).toMutableList()
     }
 
+    fun locateNumber(){
+        val pattern: Pattern = Pattern.compile("\\d{1},\\d{2}")
+        val matcher: Matcher = pattern.matcher(text)
+
+        while (matcher.find()){
+            numberList.add(matcher.start())
+        }
+        numberList.removeAt(0)
+
+        numberList = removeValuesAtOddPositions(numberList).toMutableList()
+
+        numberList = numberList.map { it+3 }.toMutableList()
+    }
+
+    private fun removeValuesAtEvenPositions(list: List<Int>): List<Int> {
+        return list.filterIndexed { index, _ -> (index + 1) % 2 != 0}
+
+    }
+
+    private fun removeValuesAtOddPositions(list: List<Int>): List<Int> {
+        return list.filterIndexed {index, _ -> (index + 1)% 2 == 0}
+    }
+
     
 
     }
