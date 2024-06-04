@@ -66,7 +66,13 @@ class ReportOpenerCTT(private val fileCTT: String){
         return list.filterIndexed {index, _ -> (index + 1)% 2 == 0}
     }
 
-    
+    private fun containsLetters(input : String): Boolean {
+        return input.any {char -> char.isLetter()}
+    }
+
+    private fun removeLetters(input: String):String{
+        return input.filter{!it.isLetter()}
+    }
 
     }
 
