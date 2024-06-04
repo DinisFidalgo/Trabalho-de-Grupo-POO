@@ -73,6 +73,30 @@ class ReportOpenerCTT(private val fileCTT: String){
     private fun removeLetters(input: String):String{
         return input.filter{!it.isLetter()}
     }
+    
+    fun extractCTT(){
+        dateList.reverse()
+        numberList.reverse()
+        
+        var tNumber: Int = datesList.size - 1
+
+        while (tNumber !== -1){
+            val tList:MutableList<String> = text.substring(dateList[tNumber], numberList [tNumber]).replace("\r","").split(" ").toMutableList()
+            if (containsLetters(tList[tList.size - 2])){
+                tList[tList.size - 2] = removeLetters(tList[tList.size -2])
+            }
+            FileWriter(csvCTT,true).use {out ->
+                out.append("${tList[0]} / ${tList[tList.size - 2]} / ${tList[tList.size -1]} \n")
+
+            }
+            dateList.removeAt(dateList.size - 1)
+            numberList.removeAt(numberList.size -1)
+            tNumber -= 1
+
+        }
+    }
+
+
 
     }
 

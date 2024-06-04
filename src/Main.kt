@@ -6,17 +6,12 @@ import java.lang.Exception
 
 fun main() {
 
-    val extratoCTT = "C:\\Users\\Laptop\\Documents\\GitHub\\Trabalho-de-Grupo-POO\\src\\extratoCTT.pdf"
+    val cttpdf = ReportOpenerCTT("src/extratoCTT.pdf")
 
-    try {
-        val reportOpen = ReportOpnerCTT(extratoCTT)
-        val pdfCTT = reportOpener.readCTT()
-
-        println(pdfCTT)
-
-    }catch (e: Exception){
-        println("Erro na leitura ${e.message}")
-    }
+    cttpdf.readCTT()
+    cttpdf.datesCTT()
+    cttpdf.locateNumber()
+    cttpdf.extractCTT()
 
     //val expenseManager =  ExpenseManager()
     //val allTransactions = expenseManager.getTransactions()
