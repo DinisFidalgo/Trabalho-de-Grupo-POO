@@ -23,7 +23,7 @@ class ReportOpenerCTT(private val fileCTT:String){
     var text: String = ""
     var dateList:MutableList<Int> = mutableListOf()
     var numberList: MutableList<Int> = mutableListOf()
-    val csvCTT = File("src/main/kotlin/cttTemp.csv")
+    val csvCTT = File("src/main/kotlin/ctt.csv")
 
 
     fun readCTT(){
@@ -34,13 +34,14 @@ class ReportOpenerCTT(private val fileCTT:String){
     }
 
     fun datesCTT(){
-
+        
         val pattern: Pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}")
         val itMatch: Matcher = pattern.matcher(text)
         while (itMatch.find()){
+            println("teste")
             dateList.add(itMatch.start())
         }
-
+        println(dateList)
         dateList.removeAt(0)
         dateList = removeValuesAtEvenPositions(dateList).toMutableList()
     }

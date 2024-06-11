@@ -1,4 +1,5 @@
 package org.example
+import ReportOpenerCTT
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
@@ -10,12 +11,17 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts
 import org.apache.pdfbox.text.PDFTextStripper
 import java.awt.Font
 import java.io.File
+import java.io.FileOutputStream
 import java.io.FileWriter
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
 fun main() {
+    val escolhaMenu: Int = 0
+    println("1.CTT")
+    println("2.BPI")
+
     // PDF file
     var list: MutableList<Int> = mutableListOf()
     var list2: MutableList<Int> = mutableListOf()
@@ -71,7 +77,7 @@ fun main() {
         //adiciona a uma lista todos as posicoes inicias de uma data encontradas num documento
         list2.add(m2.start())
     }
-
+    //todos os filtros necessarios para que todas as posicoes inuteis do extrato do CTT sejam apagadas
     list2.removeFirst()
     list2.removeFirst()
     list2.removeFirst()
@@ -81,6 +87,11 @@ fun main() {
     list.reverse()
     list2.reverse()
     var tempNumber:Int = list.size - 1
+    //verificar se o ficheiro csv tem algo escrito, se tiver apagar tudo
+    if(fileCsv.readText().isNotEmpty()){
+        FileOutputStream(fileCsv).close()
+    }
+    //cria uma string atraves da posicao inicial e final presentes em cada lista, trasforma em lista e escreve para o ficheiro csv os numeros extraidos de cada linha do extrato bancario
     while (tempNumber != -1){
         var tempList: MutableList<String> = mutableListOf()
         tempList = text.substring(list[tempNumber],list2[tempNumber]).replace("\r\n","").split(" ").toMutableList()
@@ -94,5 +105,9 @@ fun main() {
         list2.removeLast()
         tempNumber = tempNumber - 1
     }
+    ReportOpenerCTT("src/main/ctt.pdf").readCTT()
+    ReportOpenerCTT("src/main/ctt.pdf").datesCTT()
+    ReportOpenerCTT("src/main/ctt.pdf").locateNumber()
+    ReportOpenerCTT("src/main/ctt.pdf").extractCTT()
 }
 
