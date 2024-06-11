@@ -26,27 +26,28 @@ class ReportOpenerCTT(private val fileCTT:String){
     val csvCTT = File("src/main/kotlin/ctt.csv")
 
 
-    fun readCTT(){
+    fun readCTT(): String {
         val file: PDDocument = Loader.loadPDF(cttFile)
         val stripper = PDFTextStripper()
         text = stripper.getText(file)
-
+        return text
     }
 
     fun datesCTT(){
-        
+        text = ReportOpenerCTT(fileCTT).readCTT()
         val pattern: Pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}")
         val itMatch: Matcher = pattern.matcher(text)
         while (itMatch.find()){
-            println("teste")
             dateList.add(itMatch.start())
         }
-        println(dateList)
+        dateList.removeAt(0)
+        dateList.removeAt(0)
         dateList.removeAt(0)
         dateList = removeValuesAtEvenPositions(dateList).toMutableList()
     }
 
     fun locateNumber(){
+        text = ReportOpenerCTT(fileCTT).readCTT()
         val pattern: Pattern = Pattern.compile("\\d{1},\\d{2}")
         val matcher: Matcher = pattern.matcher(text)
 
@@ -58,6 +59,9 @@ class ReportOpenerCTT(private val fileCTT:String){
         numberList = removeValuesAtOddPositions(numberList).toMutableList()
 
         numberList = numberList.map { it+3 }.toMutableList()
+        for(i in numberList){
+            println(text.substring(i-10,i))
+        }
     }
 
     private fun removeValuesAtEvenPositions(list: List<Int>): List<Int> {
@@ -78,6 +82,7 @@ class ReportOpenerCTT(private val fileCTT:String){
     }
 
     fun extractCTT(){
+        text = ReportOpenerCTT(fileCTT).readCTT()
         dateList.reverse()
         numberList.reverse()
 
