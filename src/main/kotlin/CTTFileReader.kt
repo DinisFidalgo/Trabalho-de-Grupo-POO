@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.font.Standard14Fonts
 import org.apache.pdfbox.text.PDFTextStripper
 import java.awt.Font
 import java.io.File
+import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.RandomAccessFile
 import java.util.regex.Matcher
@@ -33,7 +34,7 @@ class ReportOpenerCTT(private val fileCTT:String){
         return text
     }
 
-    fun datesCTT(){
+    fun datesCTT(): MutableList<Int> {
         text = ReportOpenerCTT(fileCTT).readCTT()
         val pattern: Pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}")
         val itMatch: Matcher = pattern.matcher(text)
@@ -44,9 +45,10 @@ class ReportOpenerCTT(private val fileCTT:String){
         dateList.removeAt(0)
         dateList.removeAt(0)
         dateList = removeValuesAtEvenPositions(dateList).toMutableList()
+        return dateList
     }
 
-    fun locateNumber(){
+    fun locateNumber(): MutableList<Int> {
         text = ReportOpenerCTT(fileCTT).readCTT()
         val pattern: Pattern = Pattern.compile("\\d{1},\\d{2}")
         val matcher: Matcher = pattern.matcher(text)
@@ -54,14 +56,20 @@ class ReportOpenerCTT(private val fileCTT:String){
         while (matcher.find()){
             numberList.add(matcher.start())
         }
-        numberList.removeAt(0)
+        numberList.removeFirst()
 
         numberList = removeValuesAtOddPositions(numberList).toMutableList()
 
+        numberList.removeFirst()
+        numberList.removeFirst()
+        numberList.removeFirst()
+        numberList.removeFirst()
+        numberList.removeFirst()
+        numberList.removeLast()
+        numberList.removeLast()
+
         numberList = numberList.map { it+3 }.toMutableList()
-        for(i in numberList){
-            println(text.substring(i-10,i))
-        }
+        return numberList
     }
 
     private fun removeValuesAtEvenPositions(list: List<Int>): List<Int> {
@@ -83,18 +91,23 @@ class ReportOpenerCTT(private val fileCTT:String){
 
     fun extractCTT(){
         text = ReportOpenerCTT(fileCTT).readCTT()
+        numberList = ReportOpenerCTT(fileCTT).locateNumber()
+        dateList = ReportOpenerCTT(fileCTT).datesCTT()
         dateList.reverse()
         numberList.reverse()
 
         var tNumber: Int = dateList.size - 1
-
+        //verificar se o ficheiro csv tem algo escrito, se tiver apagar tudo
+        if(csvCTT.readText().isNotEmpty()){
+            FileOutputStream(csvCTT).close()
+        }
         while (tNumber !== -1){
             val tList:MutableList<String> = text.substring(dateList[tNumber], numberList [tNumber]).replace("\r","").split(" ").toMutableList()
             if (containsLetters(tList[tList.size - 2])){
                 tList[tList.size - 2] = removeLetters(tList[tList.size -2])
             }
             FileWriter(csvCTT,true).use {out ->
-                out.append("${tList[0]} / ${tList[tList.size - 2]} / ${tList[tList.size -1]} \n")
+                out.append("${tList[0]}/${tList[tList.size - 2]}/${tList[tList.size -1]} \n")
 
             }
             dateList.removeAt(dateList.size - 1)

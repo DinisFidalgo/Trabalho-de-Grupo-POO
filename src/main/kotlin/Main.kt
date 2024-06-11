@@ -84,8 +84,6 @@ fun main() {
     list2.removeFirst()
     list2 = removeValuesAtOddPositions(list2).toMutableList()
     list2 = list2.map { it + 3 }.toMutableList()
-    list.reverse()
-    list2.reverse()
     var tempNumber:Int = list.size - 1
     //verificar se o ficheiro csv tem algo escrito, se tiver apagar tudo
     if(fileCsv.readText().isNotEmpty()){
