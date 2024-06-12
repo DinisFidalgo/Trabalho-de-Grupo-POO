@@ -1,26 +1,27 @@
 package org.example
 import ReportOpenerCTT
+import bpiProc
+import cttproc
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.pdmodel.PDPage
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDCIDFont
-import org.apache.pdfbox.pdmodel.font.PDFont
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.PDPageContentStream
+import org.apache.pdfbox.pdmodel.font.PDType1Font
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts
 import org.apache.pdfbox.text.PDFTextStripper
-import java.awt.Font
 import java.io.File
 import java.io.FileOutputStream
 import java.io.FileWriter
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.round
 
 
 fun main() {
-    val escolhaMenu: Int = 0
-    println("1.CTT")
-    println("2.BPI")
+    var escolhaMenu: Int = 0
+    println("1.BPI")
+    println("2.CTT")
+    println("3.BPI e CTT")
+    escolhaMenu = readln().toInt()
 
     // PDF file
     var list: MutableList<Int> = mutableListOf()
@@ -97,7 +98,7 @@ fun main() {
             tempList[tempList.size-2] = removeLetters(tempList[tempList.size-2])
         }
         FileWriter(fileCsv, true).use { out ->
-            out.append("${tempList[0]}/${tempList[tempList.size-2]}/${tempList[tempList.size-1]}\n")
+            out.append("${tempList[0]}/${tempList[tempList.size-2].replace(".","").replace(",",".")}/${tempList[tempList.size-1].replace(".","").replace(",",".")}\n")
         }
         list.removeLast()
         list2.removeLast()
@@ -107,5 +108,83 @@ fun main() {
     ReportOpenerCTT("src/main/ctt.pdf").datesCTT()
     ReportOpenerCTT("src/main/ctt.pdf").locateNumber()
     ReportOpenerCTT("src/main/ctt.pdf").extractCTT()
+    val listaBpi: List<Any> = bpiProc().principal()
+    val listaCtt: List<Any> = cttproc().principal()
+    if(escolhaMenu == 1){
+        val file: File = File("src/main/resultado.pdf")
+        val doc = Loader.loadPDF(file)
+        val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
+        contentStream.beginText()
+        contentStream.setFont(PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12F);
+        contentStream.setLeading(14.5f)
+        contentStream.newLineAtOffset(25F, 725F)
+        contentStream.showText("---------------------------BPI---------------------------")
+        contentStream.newLine()
+        contentStream.showText("Maior lucro: ${listaBpi[0]} no dia ${listaBpi[1]}")
+        contentStream.newLine()
+        contentStream.showText("Maior gasto: ${listaBpi[2]} no dia ${listaBpi[3]}")
+        contentStream.newLine()
+        contentStream.showText("Total Mes: ${listaBpi[4]}")
+        contentStream.newLine()
+        contentStream.showText("Media Gastos: ${listaBpi[5]}")
+        contentStream.endText()
+        contentStream.close()
+        doc.save("src/main/resultado.pdf")
+        doc.close()
+    }
+    if(escolhaMenu == 2){
+        val file: File = File("src/main/resultado.pdf")
+        val doc = Loader.loadPDF(file)
+        val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
+        contentStream.beginText()
+        contentStream.setFont(PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12F);
+        contentStream.setLeading(14.5f)
+        contentStream.newLineAtOffset(25F, 725F)
+        contentStream.showText("---------------------------CTT---------------------------")
+        contentStream.newLine()
+        contentStream.showText("Maior lucro: ${listaCtt[0]} no dia ${listaCtt[1]}")
+        contentStream.newLine()
+        contentStream.showText("Maior gasto: ${listaCtt[2]} no dia ${listaBpi[3]}")
+        contentStream.newLine()
+        contentStream.showText("Total Mes: ${listaCtt[4]}")
+        contentStream.newLine()
+        contentStream.showText("Media Gastos: ${listaCtt[5]}")
+        contentStream.endText()
+        contentStream.close()
+        doc.save("src/main/resultado.pdf")
+        doc.close()
+    }
+    if(escolhaMenu==3){
+        val file: File = File("src/main/resultado.pdf")
+        val doc = Loader.loadPDF(file)
+        val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
+        contentStream.beginText()
+        contentStream.setFont(PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12F);
+        contentStream.setLeading(14.5f)
+        contentStream.newLineAtOffset(25F, 725F)
+        contentStream.showText("---------------------------BPi---------------------------")
+        contentStream.newLine()
+        contentStream.showText("Maior lucro: ${listaCtt[0]} no dia ${listaCtt[1]}")
+        contentStream.newLine()
+        contentStream.showText("Maior gasto: ${listaCtt[2]} no dia ${listaBpi[3]}")
+        contentStream.newLine()
+        contentStream.showText("Total Mes: ${listaCtt[4]}")
+        contentStream.newLine()
+        contentStream.showText("Media Gastos: ${listaCtt[5]}")
+        contentStream.newLine()
+        contentStream.showText("---------------------------CTT---------------------------")
+        contentStream.newLine()
+        contentStream.showText("Maior lucro: ${listaBpi[0]} no dia ${listaBpi[1]}")
+        contentStream.newLine()
+        contentStream.showText("Maior gasto: ${listaBpi[2]} no dia ${listaBpi[3]}")
+        contentStream.newLine()
+        contentStream.showText("Total Mes: ${listaBpi[4]}")
+        contentStream.newLine()
+        contentStream.showText("Media Gastos: ${listaBpi[5]}")
+        contentStream.endText()
+        contentStream.close()
+        doc.save("src/main/resultado.pdf")
+        doc.close()
+    }
 }
 

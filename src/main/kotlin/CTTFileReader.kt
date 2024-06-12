@@ -107,7 +107,7 @@ class ReportOpenerCTT(private val fileCTT:String){
                 tList[tList.size - 2] = removeLetters(tList[tList.size -2])
             }
             FileWriter(csvCTT,true).use {out ->
-                out.append("${tList[0]}/${tList[tList.size - 2]}/${tList[tList.size -1]} \n")
+                out.append("${tList[0]}/${tList[tList.size - 2].replace(".","").replace(",",".")}/${tList[tList.size -1].replace(".","").replace(",",".")} \n")
 
             }
             dateList.removeAt(dateList.size - 1)
