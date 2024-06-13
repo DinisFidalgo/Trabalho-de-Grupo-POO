@@ -10,7 +10,7 @@ import java.io.FileWriter
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class MainProcessor {
+class Menu {
 
     fun processMain(escolhaMenu: Int) {
         var list: MutableList<Int> = mutableListOf()
