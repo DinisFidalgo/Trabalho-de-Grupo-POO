@@ -13,68 +13,68 @@ import java.util.regex.Pattern
 class Menu {
 
     fun processMain(escolhaMenu: Int) {
-        var list: MutableList<Int> = mutableListOf()
-        var list2: MutableList<Int> = mutableListOf()
-        val fileName = File("src/main/BPI.pdf")
-        val doc: PDDocument = Loader.loadPDF(fileName)
-        val stripper = PDFTextStripper()
-        val text = stripper.getText(doc)
-        val fileCsv: File = File("src/main/kotlin/temp.csv")
+        try {
+            var list: MutableList<Int> = mutableListOf()
+            var list2: MutableList<Int> = mutableListOf()
+            val fileName = File("src/main/BPI.pdf")
+            val doc: PDDocument = Loader.loadPDF(fileName)
+            val stripper = PDFTextStripper()
+            val text = stripper.getText(doc)
+            val fileCsv: File = File("src/main/kotlin/temp.csv")
 
-        val sb = StringBuilder()
-        val sb2 = StringBuilder()
+            val sb = StringBuilder()
+            val sb2 = StringBuilder()
 
-        sb.append(stripper.getText(doc))
-        sb2.append(stripper.getText(doc))
+            sb.append(stripper.getText(doc))
+            sb2.append(stripper.getText(doc))
 
-        val p: Pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}")
-        val p2: Pattern = Pattern.compile("\\d{1},\\d{2}")
+            val p: Pattern = Pattern.compile("\\d{2}-\\d{2}-\\d{4}")
+            val p2: Pattern = Pattern.compile("\\d{1},\\d{2}")
 
-        val m: Matcher = p.matcher(sb)
-        while (m.find()) {
-            list.add(m.start())
-        }
-        list.removeFirst()
+            val m: Matcher = p.matcher(sb)
+            while (m.find()) {
+                list.add(m.start())
+            }
+            list.removeFirst()
 
-        fun <T> removeValuesAtEvenPositions(list: List<T>): List<T> {
-            return list.filterIndexed { index, _ -> (index + 1) % 2 != 0 }
-        }
+            fun <T> removeValuesAtEvenPositions(list: List<T>): List<T> {
+                return list.filterIndexed { index, _ -> (index + 1) % 2 != 0 }
+            }
 
-        fun <T> removeValuesAtOddPositions(list: List<T>): List<T> {
-            return list.filterIndexed { index, _ -> (index + 1) % 2 == 0 }
-        }
+            fun <T> removeValuesAtOddPositions(list: List<T>): List<T> {
+                return list.filterIndexed { index, _ -> (index + 1) % 2 == 0 }
+            }
 
-        fun containsLetters(input: String): Boolean {
-            return input.any { char -> char.isLetter() }
-        }
+            fun containsLetters(input: String): Boolean {
+                return input.any { char -> char.isLetter() }
+            }
 
-        fun removeLetters(input: String): String {
-            return input.filter { !it.isLetter() }
-        }
+            fun removeLetters(input: String): String {
+                return input.filter { !it.isLetter() }
+            }
 
-        list = removeValuesAtEvenPositions(list).toMutableList()
+            list = removeValuesAtEvenPositions(list).toMutableList()
 
-        if (doc != null) {
-            doc.close()
-        }
+            if (doc != null) {
+                doc.close()
+            }
 
-        val m2: Matcher = p2.matcher(sb2)
-        while (m2.find()) {
-            list2.add(m2.start())
-        }
-        list2.removeFirst()
-        list2.removeFirst()
-        list2.removeFirst()
-        list2.removeFirst()
-        list2 = removeValuesAtOddPositions(list2).toMutableList()
-        list2 = list2.map { it + 3 }.toMutableList()
+            val m2: Matcher = p2.matcher(sb2)
+            while (m2.find()) {
+                list2.add(m2.start())
+            }
+            list2.removeFirst()
+            list2.removeFirst()
+            list2.removeFirst()
+            list2.removeFirst()
+            list2 = removeValuesAtOddPositions(list2).toMutableList()
+            list2 = list2.map { it + 3 }.toMutableList()
 
-        var tempNumber: Int = list.size - 1
+            var tempNumber: Int = list.size - 1
 
-        if (fileCsv.readText().isNotEmpty()) {
-            FileOutputStream(fileCsv).close()
-        }
-
+            if (fileCsv.readText().isNotEmpty()) {
+                FileOutputStream(fileCsv).close()
+            }
         while (tempNumber != -1) {
             var tempList: MutableList<String> = mutableListOf()
             tempList = text.substring(list[tempNumber], list2[tempNumber])
@@ -103,9 +103,13 @@ class Menu {
             2 -> generateCttReport(listaCtt)
             3 -> generateCombinedReport(listaBpi, listaCtt)
         }
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 
-    private fun generateBpiReport(listaBpi: List<Any>) {
+private fun generateBpiReport(listaBpi: List<Any>) {
+    try {
         val file: File = File("src/main/resultado.pdf")
         val doc = Loader.loadPDF(file)
         val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
@@ -126,9 +130,13 @@ class Menu {
         contentStream.close()
         doc.save("src/main/resultado.pdf")
         doc.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 
-    private fun generateCttReport(listaCtt: List<Any>) {
+private fun generateCttReport(listaCtt: List<Any>) {
+    try {
         val file: File = File("src/main/resultado.pdf")
         val doc = Loader.loadPDF(file)
         val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
@@ -149,9 +157,13 @@ class Menu {
         contentStream.close()
         doc.save("src/main/resultado.pdf")
         doc.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 
-    private fun generateCombinedReport(listaBpi: List<Any>, listaCtt: List<Any>) {
+private fun generateCombinedReport(listaBpi: List<Any>, listaCtt: List<Any>) {
+    try {
         val file: File = File("src/main/resultado.pdf")
         val doc = Loader.loadPDF(file)
         val contentStream: PDPageContentStream = PDPageContentStream(doc, doc.getPage(0))
@@ -182,5 +194,9 @@ class Menu {
         contentStream.close()
         doc.save("src/main/resultado.pdf")
         doc.close()
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
+
 }
