@@ -1,70 +1,52 @@
 import java.io.File
 
-class csvData(val date: String, val value1: Double, val value2: Double)
+class BpiProc {
 
-class bpiProc(private val bpiFile: String){
+    private val mapCsv: MutableMap<String, List<Double>> = mutableMapOf()
 
-    private val mapCSV: MutableMap<String, List<Number>> = mutableMapOf()
+    fun principal(): List<Any> {
+        val file = File("src/main/kotlin/temp.csv")
+        val listCsv = file.readLines()
 
-    fun readFileBPI(): List<String>{
-        val file = File(bpiFile)
-        return file.readLines()
-
-    }
-
-    fun ProcCsv(listCSV : List<String>){
-
-        for(line in listCSV){
-            val tList = line.split("/").toMutableList()
+        for (line in listCsv) {
+            val tList = line.split("/")
             val date = tList[0]
             val value1 = tList[1].toDouble()
             val value2 = tList[2].toDouble()
 
-            if(!mapCSV.containsKey(date)){
-                mapCSV[date] = listOf(value1, value2)
-            }else{
-                val existsValue = mapCSV.getValue(date)
-                mapCSV[date] = listOf(value1 + existsValue[0].toDouble(), value2)
+            if (!mapCsv.containsKey(date)) {
+                mapCsv[date] = listOf(value1, value2)
+            } else {
+                val existingValues = mapCsv.getValue(date)
+                mapCsv[date] = listOf(value1 + existingValues[0], value2)
             }
         }
 
-    }
-
-    fun calculateMonths(): List<Any>{
         var maiorLucro = 0.0
         var maiorLucroDia = ""
         var maiorDespesa = 0.0
         var maiorDespesaDia = ""
         var totalMes = 0.0
-        var mediaGasto = 0.0
+        var mediaGastos = 0.0
 
+        for ((key, value) in mapCsv) {
+            val lucro = value[0]
 
-        for((key, value) in mapCSV){
-            val lucro = value[0].toDouble()
-
-            if(lucro > maiorLucro){
+            if (lucro > maiorLucro) {
                 maiorLucro = lucro
                 maiorLucroDia = key
             }
-            if(lucro < maiorDespesa){
+            if (lucro < maiorDespesa) {
                 maiorDespesa = lucro
                 maiorDespesaDia = key
             }
-            mediaGasto += lucro
+            mediaGastos += lucro
         }
 
-        mediaGasto /= mapCSV.size
-        totalMes = mapCSV.values.last()[1].toDouble() - mapCSV.values.first()[1].toDouble()
+        mediaGastos /= listCsv.size
+        totalMes = listCsv.last().split("/")[2].toDouble() - listCsv.first().split("/")[2].toDouble()
 
-        return listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGasto)
-
+        val listaBpi: List<Any> = listOf(maiorLucro, maiorLucroDia, maiorDespesa, maiorDespesaDia, totalMes, mediaGastos)
+        return listaBpi
     }
-fun principal(): List<Any>{
-
-    val listCsv = readFileBPI()
-    ProcCsv(listCsv)
-
-    return calculateMonths()
-
-}
 }

@@ -1,74 +1,52 @@
 import java.io.File
 
-class CsvCTTData(val date: String, val value1: Double, val value2: Double)
+class CttProc {
 
-class cttproc (private val pdfCTT: String){
+    private val mapCsv: MutableMap<String, List<Double>> = mutableMapOf()
 
-    private val mapCsvCTT : MutableMap<String, List<Number>> = mutableMapOf()
+    fun principal(): List<Any> {
+        val file = File("src/main/kotlin/ctt.csv")
+        val listCsv = file.readLines()
 
-    fun readCTT(): List<String>{
-
-        val file = File(pdfCTT)
-        return file.readLines()
-    }
-
-    fun procCTTcsv (listCsv : List<String>){
-
-        for (line in listCsv){
-            val tList = line.split("/").toMutableList()
+        for (line in listCsv) {
+            val tList = line.split("/")
             val date = tList[0]
             val value1 = tList[1].toDouble()
             val value2 = tList[2].toDouble()
 
-
-            if(!mapCsvCTT.containsKey(date)){
-                mapCsvCTT[date] = listOf(value1,value2)
-                }
-                else{
-                    val existValue = mapCsvCTT.getValue(date)
-                    mapCsvCTT[date] = listOf(value1 + existValue[0].toDouble(), value2)
-
+            if (!mapCsv.containsKey(date)) {
+                mapCsv[date] = listOf(value1, value2)
+            } else {
+                val existingValues = mapCsv.getValue(date)
+                mapCsv[date] = listOf(value1 + existingValues[0], value2)
             }
         }
 
-    }
-
-    fun calculateCTTMonths(): List<Any>{
         var maiorLucro = 0.0
         var maiorLucroDia = ""
         var maiorDespesa = 0.0
         var maiorDespesaDia = ""
         var totalMes = 0.0
-        var mediaGasto = 0.0
+        var mediaGastos = 0.0
 
+        for ((key, value) in mapCsv) {
+            val lucro = value[0]
 
-        for((key, value) in mapCsvCTT){
-            val lucro = value[0].toDouble()
-
-            if(lucro > maiorLucro){
+            if (lucro > maiorLucro) {
                 maiorLucro = lucro
                 maiorLucroDia = key
             }
-
-            if (lucro < maiorDespesa){
+            if (lucro < maiorDespesa) {
                 maiorDespesa = lucro
                 maiorDespesaDia = key
             }
-
-            mediaGasto += lucro
+            mediaGastos += lucro
         }
 
-        mediaGasto /= mapCsvCTT.size
+        mediaGastos /= listCsv.size
+        totalMes = listCsv.last().split("/")[2].toDouble() - listCsv.first().split("/")[2].toDouble()
 
-        totalMes = mapCsvCTT.values.last()[1].toDouble() - mapCsvCTT.values.first()[1].toDouble()
-
-        return listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGasto)
-    }
-
-    fun principal(): List<Any> {
-        val listCsvCTT = readCTT()
-        procCTTcsv(listCsvCTT)
-
-        return calculateCTTMonths()
+        val listaCtt: List<Any> = listOf(maiorLucro, maiorLucroDia, maiorDespesa, maiorDespesaDia, totalMes, mediaGastos)
+        return listaCtt
     }
 }
