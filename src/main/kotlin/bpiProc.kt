@@ -1,40 +1,70 @@
 import java.io.File
 
-class bpiProc{
+class csvData(val date: String, val value1: Double, val value2: Double)
 
-fun principal(): List<Any> {
-    val file = File("src/main/kotlin/temp.csv")
-    val listCsv = file.readLines()
-    val mapCsv: MutableMap<String, List<Number>> = mutableMapOf()
-    var tList: MutableList<String> = mutableListOf()
-    for(i in 0..listCsv.size-1){
-        tList = listCsv[i].split("/").toMutableList()
-        if(!mapCsv.containsKey(tList[0])){
-            mapCsv[tList[0]]= listOf(tList[1].toDouble(),tList[2].toDouble())
-        }   else {
-            mapCsv[tList[0]]= listOf(tList[1].toDouble()+mapCsv.getValue(tList[0])[0].toDouble(),tList[2].toDouble())
-        }
-        }
-    var maiorLucro: Double = 0.0
-    var maiorLucroDia: String = ""
-    var maiorDespesa: Double = 0.0
-    var maiorDespesaDia: String = ""
-    var totalMes: Double = 0.0
-    var mediaGastos: Double = 0.0
-    for(i in mapCsv){
-        if(i.value[0].toDouble() > maiorLucro){
-            maiorLucro = i.value[0].toDouble()
-            maiorLucroDia = i.key
-        }
-        if(i.value[0].toDouble() < maiorDespesa){
-            maiorDespesa = i.value[0].toDouble()
-            maiorDespesaDia = i.key
-        }
-        mediaGastos += i.value[0].toDouble()
-        }
-    mediaGastos = mediaGastos / listCsv.size
-    totalMes=listCsv[listCsv.size-1].split("/")[2].toDouble()-listCsv[0].split("/")[2].toDouble()
-    val listaBpi: List<Any> = listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGastos)
-    return listaBpi
+class bpiProc(private val bpiFile: String){
+
+    private val mapCSV: MutableMap<String, List<Number>> = mutableMapOf()
+
+    fun readFileBPI(): List<String>{
+        val file = File(bpiFile)
+        return file.readLines()
+
     }
+
+    fun ProcCsv(listCSV : List<String>){
+
+        for(line in listCSV){
+            val tList = line.split("/").toMutableList()
+            val date = tList[0]
+            val value1 = tList[1].toDouble()
+            val value2 = tList[2].toDouble()
+
+            if(!mapCSV.containsKey(date)){
+                mapCSV[date] = listOf(value1, value2)
+            }else{
+                val existsValue = mapCSV.getValue(date)
+                mapCSV[date] = listOf(value1 + existsValue[0].toDouble(), value2)
+            }
+        }
+
+    }
+
+    fun calculateMonths(): List<Any>{
+        var maiorLucro = 0.0
+        var maiorLucroDia = ""
+        var maiorDespesa = 0.0
+        var maiorDespesaDia = ""
+        var totalMes = 0.0
+        var mediaGasto = 0.0
+
+
+        for((key, value) in mapCSV){
+            val lucro = value[0].toDouble()
+
+            if(lucro > maiorLucro){
+                maiorLucro = lucro
+                maiorLucroDia = key
+            }
+            if(lucro < maiorDespesa){
+                maiorDespesa = lucro
+                maiorDespesaDia = key
+            }
+            mediaGasto += lucro
+        }
+
+        mediaGasto /= mapCSV.size
+        totalMes = mapCSV.values.last()[1].toDouble() - mapCSV.values.first()[1].toDouble()
+
+        return listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGasto)
+
+    }
+fun principal(): List<Any>{
+
+    val listCsv = readFileBPI()
+    ProcCsv(listCsv)
+
+    return calculateMonths()
+
+}
 }
