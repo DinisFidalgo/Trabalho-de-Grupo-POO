@@ -1,39 +1,74 @@
 import java.io.File
 
-class cttproc {
+class CsvCTTData(val date: String, val value1: Double, val value2: Double)
+
+class cttproc (private val pdfCTT: String){
+
+    private val mapCsvCTT : MutableMap<String, List<Number>> = mutableMapOf()
+
+    fun readCTT(): List<String>{
+
+        val file = File(pdfCTT)
+        return file.readLines()
+    }
+
+    fun procCTTcsv (listCsv : List<String>){
+
+        for (line in listCsv){
+            val tList = line.split("/").toMutableList()
+            val date = tList[0]
+            val value1 = tList[1].toDouble()
+            val value2 = tList[2].toDouble()
+
+
+            if(!mapCsvCTT.containsKey(date)){
+                mapCsvCTT[date] = listOf(value1,value2)
+                }
+                else{
+                    val existValue = mapCsvCTT.getValue(date)
+                    mapCsvCTT[date] = listOf(value1 + existValue[0].toDouble(), value2)
+
+            }
+        }
+
+    }
+
+    fun calculateCTTMonths(): List<Any>{
+        var maiorLucro = 0.0
+        var maiorLucroDia = ""
+        var maiorDespesa = 0.0
+        var maiorDespesaDia = ""
+        var totalMes = 0.0
+        var mediaGasto = 0.0
+
+
+        for((key, value) in mapCsvCTT){
+            val lucro = value[0].toDouble()
+
+            if(lucro > maiorLucro){
+                maiorLucro = lucro
+                maiorLucroDia = key
+            }
+
+            if (lucro < maiorDespesa){
+                maiorDespesa = lucro
+                maiorDespesaDia = key
+            }
+
+            mediaGasto += lucro
+        }
+
+        mediaGasto /= mapCsvCTT.size
+
+        totalMes = mapCsvCTT.values.last()[1].toDouble() - mapCsvCTT.values.first()[1].toDouble()
+
+        return listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGasto)
+    }
+
     fun principal(): List<Any> {
-        val file = File("src/main/kotlin/ctt.csv")
-        val listCsv = file.readLines()
-        val mapCsv: MutableMap<String, List<Number>> = mutableMapOf()
-        var tList: MutableList<String> = mutableListOf()
-        for(i in 0..listCsv.size-1){
-            tList = listCsv[i].split("/").toMutableList()
-            if(!mapCsv.containsKey(tList[0])){
-                mapCsv[tList[0]]= listOf(tList[1].toDouble(),tList[2].toDouble())
-            }   else {
-                mapCsv[tList[0]]= listOf(tList[1].toDouble()+mapCsv.getValue(tList[0])[0].toDouble(),tList[2].toDouble())
-            }
-        }
-        var maiorLucro: Double = 0.0
-        var maiorLucroDia: String = ""
-        var maiorDespesa: Double = 0.0
-        var maiorDespesaDia: String = ""
-        var totalMes: Double = 0.0
-        var mediaGastos: Double = 0.0
-        for(i in mapCsv){
-            if(i.value[0].toDouble() > maiorLucro){
-                maiorLucro = i.value[0].toDouble()
-                maiorLucroDia = i.key
-            }
-            if(i.value[0].toDouble() < maiorDespesa){
-                maiorDespesa = i.value[0].toDouble()
-                maiorDespesaDia = i.key
-            }
-            mediaGastos += i.value[0].toDouble()
-        }
-        mediaGastos = mediaGastos / listCsv.size
-        totalMes=listCsv[listCsv.size-1].split("/")[2].toDouble()-listCsv[0].split("/")[2].toDouble()
-        val listaCtt: List<Any> = listOf(maiorLucro,maiorLucroDia,maiorDespesa,maiorDespesaDia,totalMes,mediaGastos)
-        return listaCtt
+        val listCsvCTT = readCTT()
+        procCTTcsv(listCsvCTT)
+
+        return calculateCTTMonths()
     }
 }
